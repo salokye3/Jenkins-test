@@ -1,36 +1,20 @@
 pipeline {
     agent any
-
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/salokye3/Jenkins-test'
+                git 'https://github.com/salokye3/Jenkins-test'
             }
         }
-
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh 'python3 -m pip install -r requirements.txt'
             }
         }
-
         stage('Run Tests') {
             steps {
-                sh 'pytest test_main.py'
+                sh 'pytest tests/'
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Cleaning up workspace...'
-            deleteDir()
-        }
-        success {
-            echo 'Build successful!'
-        }
-        failure {
-            echo 'Build failed. Check logs for details.'
         }
     }
 }
