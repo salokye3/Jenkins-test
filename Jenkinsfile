@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        PATH = "${env.PATH}:${env.HOME}/.local/bin"
+        PATH = "/home/bsalokye/.local/bin:${env.PATH}"
     }
     stages {
         stage('Clone Repository') {
@@ -11,13 +11,14 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'python3 -m pip install -r requirements.txt'
+                sh '''
+                python3 -m pip install --user -r requirements.txt
+                '''
             }
         }
         stage('Run Tests') {
             steps {
                 sh '''
-                export PATH=$PATH:$HOME/.local/bin
                 pytest tests/
                 '''
             }
